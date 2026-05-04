@@ -1,6 +1,6 @@
 <?php
 $BOT_TOKEN = "8560546892:AAH0VMbTtWDB4x0x7-I8KsYqdrV5r4hTACw";
-$WEBSITE_URL = "https://yourusername.github.io/shop-deals/";
+$WEBSITE_URL = "https://telegram-bot-nu-sooty.vercel.app";
 
 $update = json_decode(file_get_contents('php://input'), true);
 
